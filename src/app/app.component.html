@@ -12,23 +12,22 @@
     </div>
   </div>
   <div class="row">
-    <div class="col">
+    <div class="col-5">
       <h3>Input:</h3>
       <div class="form-group">
         <label for="link">Url:</label>
         <input type="text" id="link" class="form-control" [(ngModel)]="linkInput" (ngModelChange)="linkInputUpdate($event)">
       </div>
     </div>
-    <div class="col">
+    <div class="col-7">
       <h3>Output:</h3>
-      <pre id="output-container">
-        <code>
-          <div *ngIf="inProgress"><i class="fas fa-spinner fa-spin fa-lg"></i></div>
-          {{ output }}
-        </code>
-      </pre>
+      <div *ngIf="inProgress"><i class="fas fa-spinner fa-spin fa-lg"></i></div>
+      <pre id="output-container" *ngIf="!notRecognized && !truncated"><code>{{ output }}</code></pre>
       <ngb-alert [dismissible]="false" type="warning" *ngIf="notRecognized">
         <strong>Not recognized</strong> The URL you provided has not been recognized.
+      </ngb-alert>
+      <ngb-alert [dismissible]="false" type="warning" *ngIf="truncated">
+        <strong>Truncated tweet</strong> This tweet has more complex data and is not supportet yet.
       </ngb-alert>
       <div id="output-error"></div>
     </div>
