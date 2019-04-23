@@ -14,7 +14,7 @@ export class AppComponent {
 
   public inProgress = false;
 
-  public linkInput: string = 'https://twitter.com/JYPETWICE/status/1120341497742626816';
+  public linkInput: string;
 
   public notRecognized = false;
 
@@ -68,9 +68,9 @@ export class AppComponent {
   }
 
   handleTwitterTweet(tweetId: string) {
-    const url = `${this.apiBase}/statuses/show/${tweetId}`;
+    const endpoint = `${this.apiBase}/statuses/show/${tweetId}`;
     this.inProgress = true;
-    this.$http.get(url).subscribe((tweet: any) => {
+    this.$http.get(endpoint).subscribe((tweet: any) => {
       if (tweet.truncated) {
         this.truncated = true;
         this.inProgress = false;
