@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ReturnStatement } from '@angular/compiler';
 
 @Component({
   selector: 'app-root',
