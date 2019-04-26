@@ -1,0 +1,29 @@
+# This file is a template, and might need editing before it works on your project.
+# Official framework image. Look for the different tagged releases at:
+# https://hub.docker.com/r/library/node/tags/
+image: teracy/angular-cli:latest
+
+
+# This folder is cached between builds
+# http://docs.gitlab.com/ce/ci/yaml/README.html#cache
+cache:
+  paths:
+  - node_modules/
+
+test_e2e:
+  stage: test
+  script:
+   - npm install
+   - npx ng e2e
+
+test_dev:
+  stage: test
+  script:
+   - npm install
+   - npx ng test
+
+test_prod:
+  stage: test
+  script:
+   - npm install
+   - npx ng test --prod
