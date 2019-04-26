@@ -10,8 +10,6 @@ cache:
   paths:
   - node_modules/
 
-parallel: 2
-
 test_e2e:
   stage: test
   script:
