@@ -10,20 +10,21 @@ cache:
   paths:
   - node_modules/
 
+before_script:
+  - npm install
+  - ng version
+
 test_e2e:
   stage: test
   script:
-   - npm install
    - npx ng e2e
 
 test_dev:
   stage: test
   script:
-   - npm install
-   - npx ng test
+   - npx ng test --browsers Chrome_no_sandbox -w false
 
 test_prod:
   stage: test
   script:
-   - npm install
-   - npx ng test --prod
+   - npx ng test --prod --browsers Chrome_no_sandbox -w false
