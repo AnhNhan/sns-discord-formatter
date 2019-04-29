@@ -13,7 +13,9 @@ const twitterClient = new Twitter(twitterCredentials);
 app.use(cors());
 app.use(bodyParser.json());
 
-app.get('/', (req, res) => res.send('Hello World!'));
+app.get('/', (req, res) => res.send('This API is not meant to be visited by a browser.'));
+
+app.use(express.static(__dirname + '../../sns-discord-formatter'));
 
 app.get('/statuses/show/:id', (req, res) => {
   const tweetId: string = req.params.id;

@@ -10,6 +10,13 @@ cache:
   paths:
   - node_modules/
 
+build:
+  stage: build
+  script:
+   - npm install
+   - ng build
+   - tsc --project src-express/
+
 test_e2e:
   stage: test
   script:
