@@ -17,17 +17,17 @@ before_script:
 test_e2e:
   stage: test
   script:
-   - npx ng e2e
+   - npx ng e2e --browsers Chrome_no_sandbox
 
 test_dev:
   stage: test
   script:
-   - npx ng test --browsers Chrome_no_sandbox -w false
+   - npx ng test --browsers Chrome_no_sandbox --watch false
 
 test_prod:
   stage: test
   script:
-   - npx ng test --prod --browsers Chrome_no_sandbox -w false
+   - npx ng test --prod --browsers Chrome_no_sandbox --watch false
 
 deploy_review:
   stage: deploy
