@@ -29,7 +29,7 @@ module.exports = function (config) {
     customLaunchers: {
       Chrome_no_sandbox: {
         base: 'Chrome',
-        flags: ['--no-sandbox'] // for running within Docker
+        flags: ['--no-sandbox', '--disable-setuid-sandbox'] // for running within Docker
       }
     },
     singleRun: false,
