@@ -31,12 +31,14 @@ test_prod:
 
 build_dev:
   stage: build
+  image: docker
   script:
     - docker build -t registry.gitlab.anhnhan.de/converge/discord/dev/sns-discord-formatter .
     - docker push registry.gitlab.anhnhan.de/converge/discord/dev/sns-discord-formatter
 
 build_prod:
   stage: build
+  image: docker
   script:
     - docker build -t registry.gitlab.anhnhan.de/converge/discord/sns-discord-formatter .
     - docker push registry.gitlab.anhnhan.de/converge/discord/sns-discord-formatter
