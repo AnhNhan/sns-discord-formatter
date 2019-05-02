@@ -36,6 +36,6 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Welcome to sns-discord-formatter!');
+    expect(compiled.querySelector('h1').textContent).toContain('SNS Discord Formatter!');
   });
 });

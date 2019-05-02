@@ -10,7 +10,7 @@ describe('workspace-project App', () => {
 
   it('should display welcome message', () => {
     page.navigateTo();
-    expect(page.getTitleText()).toEqual('Welcome to sns-discord-formatter!');
+    expect(page.getTitleText()).toEqual('SNS Discord Formatter');
   });
 
   afterEach(async () => {
