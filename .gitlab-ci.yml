@@ -31,24 +31,18 @@ test_prod:
 
 build_dev:
   stage: build
-  dependencies:
-    - test_dev
   script:
     - docker build -t registry.gitlab.anhnhan.de/converge/discord/dev/sns-discord-formatter .
     - docker push registry.gitlab.anhnhan.de/converge/discord/dev/sns-discord-formatter
 
 build_prod:
   stage: build
-  dependencies:
-    - test_prod
   script:
     - docker build -t registry.gitlab.anhnhan.de/converge/discord/sns-discord-formatter .
     - docker push registry.gitlab.anhnhan.de/converge/discord/sns-discord-formatter
 
 deploy_review:
   stage: deploy
-  dependencies:
-    - build_dev
   script:
     - echo "Deploy a review app"
   environment:
@@ -73,8 +67,6 @@ stop_review:
 
 deploy_staging:
   stage: deploy
-  dependencies:
-    - build_dev
   script:
     - echo "Deploy to staging server"
   environment:
@@ -85,8 +77,6 @@ deploy_staging:
 
 deploy_prod:
   stage: deploy
-  dependencies:
-    - build_prod
   script:
     - echo "Deploy to production server"
   environment:
