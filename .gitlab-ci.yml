@@ -28,6 +28,8 @@ stages:
 build:
   stage: build
   script:
+   - npm version
+   - ng version
    - npm install
    - ng build
    - npx tsc --project src-express/
