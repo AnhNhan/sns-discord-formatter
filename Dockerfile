@@ -12,7 +12,7 @@ RUN node --version
 
 RUN npm --version
 
-RUN npm install
+RUN npm install && ng build && npx tsc --project src-express/
 
 COPY --chown=node:node . .
 
