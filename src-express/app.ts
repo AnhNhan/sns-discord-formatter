@@ -13,7 +13,7 @@ const twitterClient = new Twitter(twitterCredentials);
 app.use(cors());
 app.use(bodyParser.json());
 
-app.get('/', (req, res) => res.send('Hello World!'));
+app.use(express.static(__dirname + '../../sns-discord-formatter'));
 
 app.get('/statuses/show/:id', (req, res) => {
   const tweetId: string = req.params.id;
@@ -29,3 +29,7 @@ app.get('/statuses/show/:id', (req, res) => {
 });
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+
+app.use(function(req, res, next) {
+  res.status(404).send('This API is not meant to be visited by a browser.');
+});

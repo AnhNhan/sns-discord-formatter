@@ -10,26 +10,29 @@ cache:
   paths:
   - node_modules/
 
+build:
+  stage: build
+  script:
+   - npm install
+   - ng build
+   - npx tsc --project src-express/
+
 test_e2e:
   stage: test
   script:
-   - npm install
-   - ng version
-   - npx ng e2e
+   - ng e2e
 
 test_dev:
   stage: test
   script:
-   - npm install
-   - ng version
-   - npx ng test --browsers Chrome_no_sandbox --watch false
+   - ng test --browsers Chrome_no_sandbox --watch false
 
 test_prod:
   stage: test
   script:
    - npm install
    - ng version
-   - npx ng test --prod --browsers Chrome_no_sandbox --watch false
+   - ng test --prod --browsers Chrome_no_sandbox --watch false
 
 deploy_review:
   stage: deploy
