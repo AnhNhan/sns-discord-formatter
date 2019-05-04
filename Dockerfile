@@ -41,4 +41,5 @@ RUN npx ng version && npx ng build
 
 EXPOSE 4200
 
-CMD [ "npx", "ng", "serve" ]
+# todo setup a proper webserver
+CMD [ "npx", "ng", "serve", "--host", "0.0.0.0", "--disable-host-check" ]
