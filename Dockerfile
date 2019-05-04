@@ -26,7 +26,7 @@ USER pptruser
 
 WORKDIR /app
 
-COPY --chown=pptruser:pptruser package*.json .
+COPY --chown=pptruser:pptruser package*.json ./
 
 RUN npm version
 
