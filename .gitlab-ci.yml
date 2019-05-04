@@ -13,6 +13,7 @@ cache:
 stages:
   - build
   - test
+  - release
   - deploy # dummy stage to follow the template guidelines
   - review
   - dast
