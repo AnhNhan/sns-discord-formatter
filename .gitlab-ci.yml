@@ -57,19 +57,19 @@ test_e2e:
   stage: test
   script:
     - docker pull $CONTAINER_TEST_IMAGE
-    - docker run $CONTAINER_TEST_IMAGE ng e2e
+    - docker run $CONTAINER_TEST_IMAGE npx ng e2e
 
 test_dev:
   stage: test
   script:
     - docker pull $CONTAINER_TEST_IMAGE
-    - docker run $CONTAINER_TEST_IMAGE ng test --browsers Chrome_no_sandbox --watch false
+    - docker run $CONTAINER_TEST_IMAGE npx ng test --browsers Chrome_no_sandbox --watch false
 
 test_prod:
   stage: test
   script:
     - docker pull $CONTAINER_TEST_IMAGE
-    - docker run $CONTAINER_TEST_IMAGE --prod --browsers Chrome_no_sandbox --watch false
+    - docker run $CONTAINER_TEST_IMAGE npx ng --prod --browsers Chrome_no_sandbox --watch false
 
 release-image:
   stage: release
