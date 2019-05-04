@@ -5,7 +5,7 @@ RUN apk update && apk upgrade && \
     echo @edge http://nl.alpinelinux.org/alpine/edge/community >> /etc/apk/repositories && \
     echo @edge http://nl.alpinelinux.org/alpine/edge/main >> /etc/apk/repositories && \
     apk add --no-cache \
-      chromium@73.0.3683.103-r0 \
+      chromium=73.0.3683.103-r0 \
       nss@edge \
       freetype@edge \
       harfbuzz@edge \
@@ -28,14 +28,16 @@ USER pptruser
 
 WORKDIR /app
 
-COPY --chown=pptruser:pptruser . ./
+COPY --chown=pptruser:pptruser package*.json .
 
 RUN npm version
 
-RUN npm install && ng build && npx tsc --project src-express/
+RUN npm version && npm install && ng build && npx tsc --project src-express/
 
 # compatible with chrome 73
 RUN npm install --save puppeteer@1.12.2
+
+COPY --chown=pptruser:pptruser . .
 
 RUN npx ng version && npx ng build
 
