@@ -30,7 +30,7 @@ COPY --chown=pptruser:pptruser package*.json ./
 
 RUN npm version
 
-RUN npm version && npm install && ng build && npx tsc --project src-express/
+RUN npm version && npm install
 
 # compatible with chrome 73
 RUN npm install --save puppeteer@1.12.2
