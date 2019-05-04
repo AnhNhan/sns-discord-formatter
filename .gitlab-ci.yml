@@ -41,11 +41,19 @@ test_e2e:
 
 test_dev:
   stage: test
+  artifacts:
+    name: "$CI_COMMIT_REF_NAME"
+    paths:
+      - coverage/
   script:
    - ng test --browsers Chrome_no_sandbox --watch false
 
 test_prod:
   stage: test
+  artifacts:
+    name: "$CI_COMMIT_REF_NAME"
+    paths:
+      - coverage/
   script:
    - npm install
    - ng version
