@@ -70,5 +70,4 @@ test_prod:
     - docker run $CONTAINER_TEST_IMAGE --prod --browsers Chrome_no_sandbox --watch false
 
 include:
-  - template: Jobs/Code-Quality.gitlab-ci.yml
   - template: Jobs/Deploy.gitlab-ci.yml
