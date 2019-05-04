@@ -28,19 +28,16 @@ USER pptruser
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY --chown=pptruser:pptruser . ./
 
-USER node
-
-RUN node --version
-
-RUN npm --version
+RUN npm version
 
 RUN npm install && ng build && npx tsc --project src-express/
 
-RUN npm install --save puppeteer@1.12.2 //
+# compatible with chrome 73
+RUN npm install --save puppeteer@1.12.2
 
-COPY --chown=node:node . .
+RUN npx ng version && npx ng build
 
 EXPOSE 4200
 

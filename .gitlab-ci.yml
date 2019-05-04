@@ -25,39 +25,49 @@ stages:
   - incremental rollout 100%
   - cleanup
 
+variables:
+  GIT_STRATEGY: none
+  CONTAINER_TEST_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+
+build-master:
+  stage: build
+  variables:
+    GIT_STRATEGY: clone
+  script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - docker build --pull -t "$CI_REGISTRY_IMAGE" .
+    - docker push "$CI_REGISTRY_IMAGE"
+  only:
+    - master
+
 build:
   stage: build
+  variables:
+    GIT_STRATEGY: clone
   script:
-   - npm version
-   - npm install
-   - ng version
-   - ng build
-   - npx tsc --project src-express/
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
+    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
+  except:
+    - master
 
 test_e2e:
   stage: test
   script:
-   - ng e2e
+    - docker pull $CONTAINER_TEST_IMAGE
+    - docker run $CONTAINER_TEST_IMAGE ng e2e
 
 test_dev:
   stage: test
-  artifacts:
-    name: "$CI_COMMIT_REF_NAME"
-    paths:
-      - coverage/
   script:
-   - ng test --browsers Chrome_no_sandbox --watch false
+    - docker pull $CONTAINER_TEST_IMAGE
+    - docker run $CONTAINER_TEST_IMAGE ng test --browsers Chrome_no_sandbox --watch false
 
 test_prod:
   stage: test
-  artifacts:
-    name: "$CI_COMMIT_REF_NAME"
-    paths:
-      - coverage/
   script:
-   - npm install
-   - ng version
-   - ng test --prod --browsers Chrome_no_sandbox --watch false
+    - docker pull $CONTAINER_TEST_IMAGE
+    - docker run $CONTAINER_TEST_IMAGE --prod --browsers Chrome_no_sandbox --watch false
 
 include:
   - template: Jobs/Code-Quality.gitlab-ci.yml
