@@ -64,8 +64,8 @@ export class AppComponent {
     document.execCommand('copy');
   }
 
-  selectText(node) {
-    node = document.getElementById(node);
+  selectText(nodeId: string) {
+    const node = document.getElementById(nodeId);
 
     if (typeof document.body.createTextRange === 'function') {
         const range = document.body.createTextRange();
@@ -145,5 +145,16 @@ export class AppComponent {
 cr. @${this.authorName} <${this.tweetUrl}>
 ${this.mediaLinks.join('\n')}
 ${this.urls.join('\n')}`;
+  }
+}
+
+declare global {
+  interface HTMLElement {
+    createTextRange(): TextRange;
+  }
+
+  interface TextRange {
+    moveToElementText(element: HTMLElement);
+    select();
   }
 }
