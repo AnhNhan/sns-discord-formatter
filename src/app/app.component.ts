@@ -118,6 +118,7 @@ export class AppComponent {
         this.mediaLinks = tweet.extended_entities.media
           .map((media: { type: string; expanded_url: any; media_url_https: any; }) =>
             media.type === 'video' || media.type === 'animated_gif' ? media.expanded_url : media.media_url_https)
+          .map(this.addOrigLink)
         ;
       }
       this.urls = tweet.entities.urls
@@ -129,6 +130,14 @@ export class AppComponent {
 
       this.inProgress = false;
     });
+  }
+
+  addOrigLink(url) {
+    if (/^https:\/\/pbs\.twimg\.com\/media\/.*?\.jpg$/.test(url)) {
+      return url + '?name=orig'; // I'm lazy zzz
+    }
+
+    return url;
   }
 
   resolveDaumCdn(url) {
