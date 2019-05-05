@@ -55,18 +55,21 @@ build:
 
 test_e2e:
   stage: test
+  allow_failure: true
   script:
     - docker pull $CONTAINER_TEST_IMAGE
     - docker run $CONTAINER_TEST_IMAGE npx ng e2e
 
 test_dev:
   stage: test
+  allow_failure: true
   script:
     - docker pull $CONTAINER_TEST_IMAGE
     - docker run $CONTAINER_TEST_IMAGE npx ng test --browsers Chrome_no_sandbox --watch false
 
 test_prod:
   stage: test
+  allow_failure: true
   script:
     - docker pull $CONTAINER_TEST_IMAGE
     - docker run $CONTAINER_TEST_IMAGE npx ng --prod --browsers Chrome_no_sandbox --watch false
