@@ -23,6 +23,7 @@
       <h3>Output:</h3>
       <div *ngIf="inProgress"><i class="fas fa-spinner fa-spin fa-lg"></i></div>
       <pre id="output-container" *ngIf="!notRecognized && !truncated"><code>{{ output }}</code></pre>
+      <button type="button" class="btn btn-light" (click)="copy()">Copy</button>
       <ngb-alert [dismissible]="false" type="warning" *ngIf="notRecognized">
         <strong>Not recognized</strong> The URL you provided has not been recognized.
       </ngb-alert>

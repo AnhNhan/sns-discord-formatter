@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import * as Url from 'url-parse';
 
 @Component({
   selector: 'app-root',
@@ -9,8 +10,10 @@ import { HttpClient } from '@angular/common/http';
 export class AppComponent {
   title = 'sns-discord-formatter';
 
-  // todo check if we need any more in the future
-  private apiBase = '/';
+  // private apiBase = 'https://sns-services.anhnhan.de/api/';
+  private apiBase = '//localhost:3000';
+  // todo find a better way to store this - not that it's too critical
+  private apiKey = 'dUlcXwSVBZjeUQa97U234KXtHxTENkF9dYwMRBI9';
 
   public inProgress = false;
 
@@ -56,6 +59,29 @@ export class AppComponent {
     this.reset();
   }
 
+  copy() {
+    this.selectText('output-container');
+    document.execCommand('copy');
+  }
+
+  selectText(node) {
+    node = document.getElementById(node);
+
+    if (typeof document.body.createTextRange === 'function') {
+        const range = document.body.createTextRange();
+        range.moveToElementText(node);
+        range.select();
+    } else if (window.getSelection) {
+        const selection = window.getSelection();
+        const range = document.createRange();
+        range.selectNodeContents(node);
+        selection.removeAllRanges();
+        selection.addRange(range);
+    } else {
+        console.warn('Could not select text in node: Unsupported browser.');
+    }
+}
+
   reset() {
     this.output = 'Example output...';
     this.guessDate = undefined;
@@ -69,8 +95,13 @@ export class AppComponent {
 
   handleTwitterTweet(tweetId: string) {
     const endpoint = `${this.apiBase}/statuses/show/${tweetId}`;
+    // const endpoint = `${this.apiBase}sns-twitter-proxy?tweetId=${tweetId}`;
     this.inProgress = true;
-    this.$http.get(endpoint).subscribe((tweet: any) => {
+    this.$http.get(endpoint, {
+      headers: {
+        'x-api-key': this.apiKey,
+      },
+    }).subscribe((tweet: any) => {
       if (tweet.truncated) {
         this.truncated = true;
         this.inProgress = false;
@@ -86,14 +117,27 @@ export class AppComponent {
       if (tweet.extended_entities) {
         this.mediaLinks = tweet.extended_entities.media
           .map((media: { type: string; expanded_url: any; media_url_https: any; }) =>
-            media.type === 'video' || media.type === 'animated_gif' ? media.expanded_url : media.media_url_https);
+            media.type === 'video' || media.type === 'animated_gif' ? media.expanded_url : media.media_url_https)
+        ;
       }
-      this.urls = tweet.entities.urls.map((url: any) => url.expanded_url);
+      this.urls = tweet.entities.urls
+        .map((url: any) => url.expanded_url)
+        .map(this.resolveDaumCdn)
+      ;
 
       this.output = this.renderTweet();
 
       this.inProgress = false;
     });
+  }
+
+  resolveDaumCdn(url) {
+    if (/^https:\/\/img1\.daumcdn\.net\/thumb\//.test(url)) {
+      console.log(new Url(url, true));
+      return new Url(url, true).query.fname;
+    }
+
+    return url;
   }
 
   renderTweet() {
