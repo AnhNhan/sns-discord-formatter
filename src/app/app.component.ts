@@ -11,7 +11,7 @@ export class AppComponent {
   title = 'sns-discord-formatter';
 
   // private apiBase = 'https://sns-services.anhnhan.de/api/';
-  private apiBase = '//localhost:3000';
+  private apiBase = '';
   // todo find a better way to store this - not that it's too critical
   private apiKey = 'dUlcXwSVBZjeUQa97U234KXtHxTENkF9dYwMRBI9';
 
