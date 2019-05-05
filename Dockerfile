@@ -10,6 +10,7 @@ RUN apk update && apk upgrade && \
       freetype@edge \
       harfbuzz@edge \
       ttf-freefont@edge \
+      mesa-gl mesa-gles \
       && rm -rf /var/cache/* \
       && mkdir /var/cache/apk
 
