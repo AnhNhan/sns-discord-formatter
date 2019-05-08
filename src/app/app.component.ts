@@ -10,8 +10,7 @@ import * as Url from 'url-parse';
 export class AppComponent {
   title = 'sns-discord-formatter';
 
-  // private apiBase = 'https://sns-services.anhnhan.de/api/';
-  private apiBase = '';
+  private apiBase = 'https://sns-services.anhnhan.de/api/';
   // todo find a better way to store this - not that it's too critical
   private apiKey = 'dUlcXwSVBZjeUQa97U234KXtHxTENkF9dYwMRBI9';
 
@@ -94,8 +93,7 @@ export class AppComponent {
   }
 
   handleTwitterTweet(tweetId: string) {
-    const endpoint = `${this.apiBase}/statuses/show/${tweetId}`;
-    // const endpoint = `${this.apiBase}sns-twitter-proxy?tweetId=${tweetId}`;
+    const endpoint = `${this.apiBase}sns-proxy/twitter/status/${tweetId}`;
     this.inProgress = true;
     this.$http.get(endpoint, {
       headers: {
