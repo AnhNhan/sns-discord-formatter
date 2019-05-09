@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import * as Url from 'url-parse';
+import { Twitter } from 'twit';
 
 @Component({
   selector: 'app-root',
@@ -99,7 +100,14 @@ export class AppComponent {
       headers: {
         'x-api-key': this.apiKey,
       },
-    }).subscribe((tweet: any) => {
+    }).subscribe((response: {
+      data: Twitter.Status & {
+        extended_entities?: {
+          media?: Twitter.MediaEntity[];
+        }
+      }
+    }) => {
+      const tweet = response.data;
       if (tweet.truncated) {
         this.truncated = true;
         this.inProgress = false;
