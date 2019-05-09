@@ -17,6 +17,15 @@
       <div class="form-group">
         <label for="link" class="d-block">Url:</label>
         <input type="text" id="link" class="form-control" [(ngModel)]="linkInput" (ngModelChange)="linkInputUpdate($event)">
+        <ngb-alert type="info">Non-functional settings:</ngb-alert>
+        <label for="formatCreditScreenName">
+          <input type="checkbox" id="formatCreditScreenName" [(ngModel)]="formatCreditScreenName">
+          Format: Credit screen name (@name) instead of user name (nickname)
+        </label>
+        <label for="formatCreditSiteOverText">
+          <input type="checkbox" id="formatCreditSiteOverText" [(ngModel)]="formatCreditSiteOverText">
+          Format: Credit the site (e.g. Twitter) instead of using the status text
+        </label>
       </div>
     </div>
     <div class="col-7">

@@ -19,6 +19,9 @@ export class AppComponent {
 
   public linkInput: string;
 
+  public formatCreditScreenName = false;
+  public formatCreditSiteOverText = false;
+
   public notRecognized = false;
 
   public output = 'Example output...';
