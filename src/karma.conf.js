@@ -1,6 +1,8 @@
 // Karma configuration file, see link for more information
 // https://karma-runner.github.io/1.0/config/configuration-file.html
 
+process.env.CHROME_BIN = require('puppeteer').executablePath();
+
 module.exports = function (config) {
   config.set({
     basePath: '',
@@ -13,7 +15,8 @@ module.exports = function (config) {
       require('@angular-devkit/build-angular/plugins/karma')
     ],
     client: {
-      clearContext: false // leave Jasmine Spec Runner output visible in browser
+      clearContext: false, // leave Jasmine Spec Runner output visible in browser
+      args: [ '--headless', '--disable-gpu', '--window-size=1920,1080', '--no-sandbox', '--disable-setuid-sandbox' ],
     },
     coverageIstanbulReporter: {
       dir: require('path').join(__dirname, '../coverage/sns-discord-formatter'),
@@ -26,12 +29,6 @@ module.exports = function (config) {
     logLevel: config.LOG_INFO,
     autoWatch: true,
     browsers: ['Chrome'],
-    customLaunchers: {
-      Chrome_no_sandbox: {
-        base: 'Chrome',
-        flags: ['--headless', '--disable-gpu', '--window-size=1920,1080', '--no-sandbox', '--disable-setuid-sandbox'] // for running within Docker
-      }
-    },
     singleRun: false,
     restartOnFileChange: true
   });

@@ -3,6 +3,8 @@
 
 const { SpecReporter } = require('jasmine-spec-reporter');
 
+process.env.HEADLESS = true;
+
 exports.config = {
   allScriptsTimeout: 11000,
   specs: [
@@ -11,7 +13,8 @@ exports.config = {
   capabilities: {
     'browserName': 'chrome',
     chromeOptions: {
-      args: [ "--headless", "--disable-gpu", "--window-size=1920,1080", "--no-sandbox", "--disable-setuid-sandbox" ]
+      args: ['--headless' ],
+      binary: require('puppeteer').executablePath(),
     }
   },
   directConnect: true,
