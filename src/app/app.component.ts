@@ -126,13 +126,14 @@ export class AppComponent {
         .trim()
         ;
       if (this.formatStripTags) {
-        this.tweetText = this.tweetText.replace(/#\w+( |\b)/g, '');
+        this.tweetText = this.tweetText.replace(/#.+?( |\b)/g, '');
       }
       if (this.attemptTranslation) {
         // tslint:disable-next-line: no-use-before-declare
         _.forOwn(translationPhrases,
-          (translated, original) => this.tweetText = this.tweetText.replace(new RegExp(original, 'g'), translated));
+          (translated, original) => this.tweetText = this.tweetText.replace(new RegExp(original, 'g'), ' ' + translated + ' '));
       }
+      this.tweetText = this.tweetText.replace(/[ \n]+/, ' ');
       this.tweetUrl = `https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`;
       if (tweet.extended_entities) {
         this.mediaLinks = tweet.extended_entities.media
