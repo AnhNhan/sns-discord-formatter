@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import * as Url from 'url-parse';
 import { Twitter } from 'twit';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-root',
@@ -19,8 +20,10 @@ export class AppComponent {
 
   public linkInput: string;
 
-  public formatCreditScreenName = false;
+  public formatCreditScreenName = true;
   public formatCreditSiteOverText = false;
+  public formatStripTags = true;
+  public attemptTranslation = true;
 
   public notRecognized = false;
 
@@ -83,7 +86,7 @@ export class AppComponent {
     } else {
         console.warn('Could not select text in node: Unsupported browser.');
     }
-}
+  }
 
   reset() {
     this.output = 'Example output...';
@@ -122,6 +125,14 @@ export class AppComponent {
         .replace(/(\s)+/gm, ' ')
         .trim()
         ;
+      if (this.formatStripTags) {
+        this.tweetText = this.tweetText.replace(/#\w+( |\b)/g, '');
+      }
+      if (this.attemptTranslation) {
+        // tslint:disable-next-line: no-use-before-declare
+        _.forOwn(translationPhrases,
+          (translated, original) => this.tweetText = this.tweetText.replace(new RegExp(original, 'g'), translated));
+      }
       this.tweetUrl = `https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`;
       if (tweet.extended_entities) {
         this.mediaLinks = tweet.extended_entities.media
@@ -141,7 +152,7 @@ export class AppComponent {
     });
   }
 
-  addOrigLink(url) {
+  addOrigLink(url: string) {
     if (/^https:\/\/pbs\.twimg\.com\/media\/.*?\.jpg$/.test(url)) {
       return url + '?name=orig'; // I'm lazy zzz
     }
@@ -149,7 +160,7 @@ export class AppComponent {
     return url;
   }
 
-  resolveDaumCdn(url) {
+  resolveDaumCdn(url: string) {
     if (/^https:\/\/img1\.daumcdn\.net\/thumb\//.test(url)) {
       console.log(new Url(url, true));
       return new Url(url, true).query.fname;
@@ -172,7 +183,24 @@ declare global {
   }
 
   interface TextRange {
-    moveToElementText(element: HTMLElement);
-    select();
+    moveToElementText(element: HTMLElement): void;
+    select(): void;
   }
 }
+
+const translationPhrases = {
+  김포: 'Gimpo airport',
+  인천: 'Incheon airport',
+  입국: 'arrival',
+  출국: 'departure',
+  프리뷰: 'preview',
+  코엑스: 'COEX',
+  더팩트: 'The Fact',
+  레카: 'red carpet', // shorthand
+  콘서트: 'concert',
+  평화이음: 'peace',
+  경상: 'Gyeongsang',
+  오랜만이야: 'It\'s been a long time',
+  도쿄콘: 'Tokyo Con',
+  도쿄: 'Tokyo',
+};
