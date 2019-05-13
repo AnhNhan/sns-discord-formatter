@@ -116,8 +116,8 @@ export class AppComponent {
         this.inProgress = false;
         return;
       }
-      this.authorName = tweet.user.name;
-      this.tweetText = (tweet.text as string)
+      this.authorName = this.formatCreditScreenName ? tweet.user.screen_name : tweet.user.name;
+      this.tweetText = (this.formatCreditSiteOverText ? 'Twitter' : tweet.text)
         .replace(/https:\/\/t\.co\/\w+/g, '')
         .replace(/(\s)+/gm, ' ')
         .trim()
