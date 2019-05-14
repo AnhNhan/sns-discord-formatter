@@ -25,6 +25,14 @@
           <input type="checkbox" id="formatCreditSiteOverText" [(ngModel)]="formatCreditSiteOverText">
           Format: Credit the site (e.g. Twitter) instead of using the status text
         </label>
+        <label for="formatStripTags">
+          <input type="checkbox" id="formatStripTags" [(ngModel)]="formatStripTags">
+          Format: Strip any hash tags
+        </label>
+        <label for="attemptTranslation">
+          <input type="checkbox" id="attemptTranslation" [(ngModel)]="attemptTranslation">
+          Experimental: Attempt to translate / romanize the tweet text
+        </label>
       </div>
     </div>
     <div class="col-7">
