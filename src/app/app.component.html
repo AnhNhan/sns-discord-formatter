@@ -28,11 +28,15 @@
         </label>
         <label for="formatStripTags">
           <input type="checkbox" id="formatStripTags" [(ngModel)]="formatStripTags">
-          Format: Strip any hash tags
+          Format: Strip any hash tags and mentions
         </label>
         <label for="attemptTranslation">
           <input type="checkbox" id="attemptTranslation" [(ngModel)]="attemptTranslation">
           Experimental: Attempt to translate / romanize the tweet text
+        </label>
+        <label for="useMachineTranslationOverHandbuilt">
+          <input type="checkbox" id="useMachineTranslationOverHandbuilt" [(ngModel)]="useMachineTranslationOverHandbuilt">
+          Experimental: Use machine translation over hand-crafted translation
         </label>
       </div>
     </div>

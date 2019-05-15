@@ -24,6 +24,7 @@ export class AppComponent {
   public formatCreditSiteOverText = false;
   public formatStripTags = true;
   public attemptTranslation = true;
+  public useMachineTranslationOverHandbuilt = true;
 
   public notRecognized = false;
 
@@ -110,7 +111,8 @@ export class AppComponent {
       data: Twitter.Status & {
         extended_entities?: {
           media?: Twitter.MediaEntity[];
-        }
+        };
+        translated_text?: string;
       }
     }) => {
       const tweet = response.data;
@@ -120,15 +122,17 @@ export class AppComponent {
         return;
       }
       this.authorName = this.formatCreditScreenName ? tweet.user.screen_name : tweet.user.name;
-      this.tweetText = (this.formatCreditSiteOverText ? 'Twitter' : tweet.text)
+      const statusText = this.attemptTranslation && this.useMachineTranslationOverHandbuilt ?
+        tweet.translated_text || tweet.text : tweet.text;
+      this.tweetText = (this.formatCreditSiteOverText ? 'Twitter' : statusText)
         .replace(/https:\/\/t\.co\/\w+/g, '')
         .replace(/(\s)+/gm, ' ')
         .trim()
         ;
       if (this.formatStripTags) {
-        this.tweetText = this.tweetText.replace(/#.+?( |\b)/g, '');
+        this.tweetText = this.tweetText.replace(/[#@].+?( |\b)/g, ' ');
       }
-      if (this.attemptTranslation) {
+      if (this.attemptTranslation && !this.useMachineTranslationOverHandbuilt) {
         // tslint:disable-next-line: no-use-before-declare
         _.forOwn(translationPhrases,
           (translated, original) => this.tweetText = this.tweetText.replace(new RegExp(original, 'g'), ' ' + translated + ' '));
@@ -199,9 +203,13 @@ const translationPhrases = {
   더팩트: 'The Fact',
   레카: 'red carpet', // shorthand
   콘서트: 'concert',
+  음악회: 'concert',
   평화이음: 'peace',
   경상: 'Gyeongsang',
+  청라: 'Cheongla',
   오랜만이야: 'It\'s been a long time',
   도쿄콘: 'Tokyo Con',
   도쿄: 'Tokyo',
+  뮤직: 'music',
+  어워즈: 'awards',
 };
