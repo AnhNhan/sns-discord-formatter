@@ -125,10 +125,7 @@ export class AppComponent {
       const statusText = this.attemptTranslation && this.useMachineTranslationOverHandbuilt ?
         tweet.translated_text || tweet.text : tweet.text;
       this.tweetText = (this.formatCreditSiteOverText ? 'Twitter' : statusText)
-        .replace(/https:\/\/t\.co\/\w+/g, '')
-        .replace(/(\s)+/gm, ' ')
-        .trim()
-        ;
+        .replace(/https:\/\/t\.co\/\w+/g, '');
       if (this.formatStripTags) {
         this.tweetText = this.tweetText.replace(/[#@].+?( |\b)/g, ' ');
       }
@@ -137,7 +134,7 @@ export class AppComponent {
         _.forOwn(translationPhrases,
           (translated, original) => this.tweetText = this.tweetText.replace(new RegExp(original, 'g'), ' ' + translated + ' '));
       }
-      this.tweetText = this.tweetText.replace(/[ \n]+/, ' ');
+      this.tweetText = this.tweetText.replace(/[ \n]+/g, ' ').trim();
       this.tweetUrl = `https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`;
       if (tweet.extended_entities) {
         this.mediaLinks = tweet.extended_entities.media
