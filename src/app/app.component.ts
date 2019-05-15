@@ -175,8 +175,7 @@ export class AppComponent {
   }
 
   renderTweet() {
-    return `\`${this.tweetText}\`
-cr. @${this.authorName} <${this.tweetUrl}>
+    return `\`${this.tweetText}\` cr. @${this.authorName} <${this.tweetUrl}>
 ${this.mediaLinks.join('\n')}
 ${this.urls.join('\n')}`;
   }
