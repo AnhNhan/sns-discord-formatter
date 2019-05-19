@@ -208,4 +208,5 @@ const translationPhrases = {
   도쿄: 'Tokyo',
   뮤직: 'music',
   어워즈: 'awards',
+  뮤뱅: 'Music Bank',
 };
