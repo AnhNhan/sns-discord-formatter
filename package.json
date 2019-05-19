@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "pull": "git pull && npm install && node_modules/.bin/ng build --prod",
+    "pull-gh": "git pull github master && npm install && node_modules/.bin/ng build --prod",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
