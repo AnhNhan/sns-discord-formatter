@@ -19,6 +19,7 @@ export class AppComponent {
   public inProgress = false;
 
   public linkInput: string;
+  public linkType: 'twitter' | 'tistory' | 'none' = 'none';
 
   public formatCreditScreenName = true;
   public formatCreditSiteOverText = false;
@@ -54,6 +55,7 @@ export class AppComponent {
     const trimmedInput = this.linkInput.trim();
     const isTwitterTweetUrl = /^((\d{16,})|https:\/\/twitter.com\/[^/]+\/status\/\d+(\?s=\d+)?)$/;
     if (isTwitterTweetUrl.test(trimmedInput)) {
+      this.linkType = 'twitter';
       const matches = trimmedInput.match(/^((\d+)|https:\/\/twitter.com\/[^/]+\/status\/(\d+)(?:\?s=\d+)?)$/);
       const tweetId = matches[2] || matches[3];
       return this.handleTwitterTweet(tweetId);
@@ -61,6 +63,7 @@ export class AppComponent {
 
     const isTistoryUrl = /^https?:\/\/(.*?)\.tistory.com\/(m\/)?(\d+)$/;
     if (isTistoryUrl.test(trimmedInput)) {
+      this.linkType = 'tistory';
       const matches = trimmedInput.match(isTistoryUrl);
       return this.handleTistory(matches[1], matches[3]);
     }
@@ -104,6 +107,7 @@ export class AppComponent {
     this.mediaLinks = [];
     this.urls = [];
     this.truncated = false;
+    this.linkType = 'none';
   }
 
   handleTistory(account: string, id: string) {
@@ -208,7 +212,7 @@ export class AppComponent {
   }
 
   renderTweet() {
-    return `\`${this.tweetText} cr. @${this.authorName}\` <${this.tweetUrl}>
+    return `\`${this.tweetText} cr. ${this.linkType == 'tistory' && this.formatCreditSiteOverText ? '' : '@'}${this.authorName}\` ${this.tweetUrl ? '<' + this.tweetUrl + '>' : ''}
 ${_.chunk(this.mediaLinks, 4).map(chunk => chunk.concat([ '\n' ]).join('\n')).join('\n')}
 ${this.urls.join('\n')}`;
   }
