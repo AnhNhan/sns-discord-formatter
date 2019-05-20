@@ -43,10 +43,10 @@ export class AppComponent {
   ) { }
 
   onInit() {
-    this.linkInputUpdate(this.linkInput);
+    this.linkInputUpdate();
   }
 
-  linkInputUpdate(event: string) {
+  linkInputUpdate() {
     this.notRecognized = false;
     this.reset();
     this.output = '';
