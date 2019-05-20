@@ -209,7 +209,7 @@ export class AppComponent {
 
   renderTweet() {
     return `\`${this.tweetText} cr. @${this.authorName}\` <${this.tweetUrl}>
-${this.mediaLinks.join('\n')}
+${_.chunk(this.mediaLinks, 4).map(chunk => chunk.concat([ '\n' ])).join('\n')}
 ${this.urls.join('\n')}`;
   }
 }
