@@ -59,6 +59,12 @@ export class AppComponent {
       return this.handleTwitterTweet(tweetId);
     }
 
+    const isTistoryUrl = /^https?:\/\/(.*?)\.tistory.com\/(m\/)?(\d+)$/;
+    if (isTistoryUrl.test(trimmedInput)) {
+      const matches = trimmedInput.match(isTistoryUrl);
+      return this.handleTistory(matches[1], matches[3]);
+    }
+
     // no further handlers
     if (trimmedInput.length !== 0) {
       this.notRecognized = true;
@@ -100,6 +106,32 @@ export class AppComponent {
     this.truncated = false;
   }
 
+  handleTistory(account: string, id: string) {
+    const tistoryRegexp = /^$/;
+    const endpoint = `${this.apiBase}sns-proxy/tistory/${account}/${id}`;
+    this.inProgress = true;
+    this.$http.get(endpoint, {
+      headers: {
+        'x-api-key': this.apiKey,
+      },
+    }).toPromise().then((response: TistoryResponse) => {
+      const data = response.data;
+      const tweetUrl = `https://${account}.tistory.com/${id}`;
+      this.authorName = this.formatCreditSiteOverText ? tweetUrl : data.pageName;
+      this.tweetText = this.attemptTranslation && this.useMachineTranslationOverHandbuilt ? data.translatedTitle : data.title;
+      this.tweetUrl = this.formatCreditSiteOverText ? '' : tweetUrl;
+
+      this.mediaLinks = data.images;
+      this.urls = data.media.map(media => `${media.type}: ${media.uri}`);
+
+      this.handMadeTranslation();
+
+      this.output = this.renderTweet();
+
+      this.inProgress = false;
+    });
+  }
+
   handleTwitterTweet(tweetId: string) {
     const endpoint = `${this.apiBase}sns-proxy/twitter/status/${tweetId}`;
     this.inProgress = true;
@@ -107,7 +139,7 @@ export class AppComponent {
       headers: {
         'x-api-key': this.apiKey,
       },
-    }).subscribe((response: {
+    }).toPromise().then((response: {
       data: Twitter.Status & {
         extended_entities?: {
           media?: Twitter.MediaEntity[];
@@ -129,11 +161,7 @@ export class AppComponent {
       if (this.formatStripTags) {
         this.tweetText = this.tweetText.replace(/[#@].+?( |\b)/g, ' ');
       }
-      if (this.attemptTranslation && !this.useMachineTranslationOverHandbuilt) {
-        // tslint:disable-next-line: no-use-before-declare
-        _.forOwn(translationPhrases,
-          (translated, original) => this.tweetText = this.tweetText.replace(new RegExp(original, 'g'), ' ' + translated + ' '));
-      }
+      this.handMadeTranslation();
       this.tweetText = this.tweetText.replace(/[ \n]+/g, ' ').trim();
       this.tweetUrl = `https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`;
       if (tweet.extended_entities) {
@@ -152,6 +180,14 @@ export class AppComponent {
 
       this.inProgress = false;
     });
+  }
+
+  private handMadeTranslation() {
+    if (this.attemptTranslation && !this.useMachineTranslationOverHandbuilt) {
+      // tslint:disable-next-line: no-use-before-declare
+      _.forOwn(translationPhrases,
+        (translated, original) => this.tweetText = this.tweetText.replace(new RegExp(original, 'g'), ' ' + translated + ' '));
+    }
   }
 
   addOrigLink(url: string) {
@@ -176,6 +212,26 @@ export class AppComponent {
 ${this.mediaLinks.join('\n')}
 ${this.urls.join('\n')}`;
   }
+}
+
+interface TistoryResponse {
+  type: 'tistory';
+  data: {
+    pageName: string;
+    authorName: string;
+    title: string;
+    translatedTitle: string;
+    translatedSourceLanguageCode: string;
+    translatedTargetLanguageCode: string;
+    url: string;
+    isProtected: boolean;
+    pageText: string;
+    images: string[];
+    media: {
+      type: string;
+      uri: string;
+    }[];
+  };
 }
 
 declare global {
