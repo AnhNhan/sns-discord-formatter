@@ -23,7 +23,7 @@
     "@angular/router": "^7.2.15",
     "@ng-bootstrap/ng-bootstrap": "^4.1.2",
     "core-js": "^2.5.4",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.15",
     "querystringify": "^2.1.1",
     "rxjs": "~6.3.3",
     "tslib": "^1.9.0",

@@ -61,7 +61,7 @@ export class AppComponent {
       return this.handleTwitterTweet(tweetId);
     }
 
-    const isTistoryUrl = /^https?:\/\/(.*?)\/(m\/)?(\d+)$/;
+    const isTistoryUrl = /^https?:\/\/(.*?)\/(m\/)?(\d+)(\?.*)?$/;
     if (isTistoryUrl.test(trimmedInput)) {
       this.linkType = 'tistory';
       const matches = trimmedInput.match(isTistoryUrl);
