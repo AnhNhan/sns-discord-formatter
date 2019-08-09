@@ -211,8 +211,9 @@ export class AppComponent {
   }
 
   renderTweet() {
-    return `\`${this.tweetText} cr. ${this.linkType == 'tistory' && this.formatCreditSiteOverText ? '' : '@'}${this.authorName}\` ${this.tweetUrl ? '<' + this.tweetUrl + '>' : ''}
-${_.chunk(this.mediaLinks, 4).map(chunk => chunk.concat([ '\n' ]).join('\n')).join('\n')}
+    return `\`${this.tweetText} cr. ${this.linkType === 'tistory' &&
+      this.formatCreditSiteOverText ? '' : '@'}${this.authorName}\` ${this.tweetUrl ? '<' + this.tweetUrl + '>' : ''}
+${_.chunk(this.mediaLinks, this.linkType === 'tistory' ? 2 : 4).map(chunk => chunk.concat([ '\n' ]).join('\n')).join('\n')}
 ${this.urls.join('\n')}`;
   }
 }
