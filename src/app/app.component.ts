@@ -61,7 +61,7 @@ export class AppComponent {
       return this.handleTwitterTweet(tweetId);
     }
 
-    const isTistoryUrl = /^https?:\/\/(.*?)\.tistory.com\/(m\/)?(\d+)$/;
+    const isTistoryUrl = /^https?:\/\/(.*?)\/(m\/)?(\d+)$/;
     if (isTistoryUrl.test(trimmedInput)) {
       this.linkType = 'tistory';
       const matches = trimmedInput.match(isTistoryUrl);
@@ -111,7 +111,6 @@ export class AppComponent {
   }
 
   handleTistory(account: string, id: string) {
-    const tistoryRegexp = /^$/;
     const endpoint = `${this.apiBase}sns-proxy/tistory/${account}/${id}`;
     this.inProgress = true;
     this.$http.get(endpoint, {
