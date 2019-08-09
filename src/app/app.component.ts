@@ -119,7 +119,7 @@ export class AppComponent {
       },
     }).toPromise().then((response: TistoryResponse) => {
       const data = response.data;
-      const tweetUrl = `https://${account}.tistory.com/${id}`;
+      const tweetUrl = data.publicUrl || `https://${account}.tistory.com/${id}`;
       this.authorName = this.formatCreditSiteOverText ? tweetUrl : data.pageName;
       this.tweetText = this.attemptTranslation && this.useMachineTranslationOverHandbuilt ? data.translatedTitle : data.title;
       this.tweetUrl = this.formatCreditSiteOverText ? '' : tweetUrl;
@@ -228,6 +228,7 @@ interface TistoryResponse {
     translatedSourceLanguageCode: string;
     translatedTargetLanguageCode: string;
     url: string;
+    publicUrl: string;
     isProtected: boolean;
     pageText: string;
     images: string[];
