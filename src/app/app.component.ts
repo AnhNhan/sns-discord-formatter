@@ -210,8 +210,15 @@ export class AppComponent {
     return url;
   }
 
+  normalizeDate(text: string) {
+    text = text.replace(/\b(\d{2})[\.\/\-](\d{2})[\.\/\-](\d{4})\b/, '$3$2$1');
+    text = text.replace(/\b(\d{2,4})[\.\/\-](\d{2})[\.\/\-](\d{2})\b/, '$1$2$3');
+
+    return text;
+  }
+
   renderTweet() {
-    return `\`${this.tweetText} cr. ${this.linkType === 'tistory' &&
+    return `\`${this.normalizeDate(this.tweetText)} cr. ${this.linkType === 'tistory' &&
       this.formatCreditSiteOverText ? '' : '@'}${this.authorName}\` ${this.tweetUrl ? '<' + this.tweetUrl + '>' : ''}
 ${_.chunk(this.mediaLinks, this.linkType === 'tistory' ? 2 : 4).map(chunk => chunk.concat([ '\n' ]).join('\n')).join('\n')}
 ${this.urls.join('\n')}`;

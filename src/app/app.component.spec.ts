@@ -38,4 +38,49 @@ describe('AppComponent', () => {
     const compiled = fixture.debugElement.nativeElement;
     expect(compiled.querySelector('h1').textContent).toContain('SNS Discord Formatter');
   });
+
+  it('normalizeDates', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const component = fixture.componentRef.instance;
+
+    const testData = [
+      {
+        input: '83/11/29',
+        output: '831129',
+      },
+      {
+        input: '1983/11/29',
+        output: '19831129',
+      },
+      {
+        input: '1983.11.29',
+        output: '19831129',
+      },
+      {
+        input: '83.11.29',
+        output: '831129',
+      },
+      {
+        input: '29.11.1983',
+        output: '19831129',
+      },
+      {
+        input: '29/11/1983',
+        output: '19831129',
+      },
+      {
+        input: '83-11-29',
+        output: '831129',
+      },
+      {
+        input: '29-11-1983',
+        output: '19831129',
+      },
+    ];
+
+    testData.forEach(testEntry => {
+      const result = component.normalizeDate(testEntry.input);
+      expect(result).toBe(testEntry.output);
+    });
+  })
 });
