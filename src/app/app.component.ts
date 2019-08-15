@@ -122,6 +122,7 @@ export class AppComponent {
       const tweetUrl = data.publicUrl || `https://${account}.tistory.com/${id}`;
       this.authorName = this.formatCreditSiteOverText ? tweetUrl : data.pageName;
       this.tweetText = this.attemptTranslation && this.useMachineTranslationOverHandbuilt ? data.translatedTitle : data.title;
+      this.tweetText = this.tweetText || '';
       this.tweetUrl = this.formatCreditSiteOverText ? '' : tweetUrl;
 
       this.mediaLinks = data.images;
