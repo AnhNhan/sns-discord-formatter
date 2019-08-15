@@ -160,7 +160,7 @@ export class AppComponent {
       this.authorName = this.formatCreditScreenName ? tweet.user.screen_name : tweet.user.name;
       const statusText = this.attemptTranslation && this.useMachineTranslationOverHandbuilt ?
         tweet.translated_text || tweet.text : tweet.text;
-      this.tweetText = (this.formatCreditSiteOverText ? 'Twitter' : statusText)
+      this.tweetText = (this.formatCreditSiteOverText ? 'Twitter' : (statusText || ''))
         .replace(/https:\/\/t\.co\/\w+/g, '');
       if (this.formatStripTags) {
         this.tweetText = this.tweetText.replace(/[#@].+?( |\b)/g, ' ');
